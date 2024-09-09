@@ -1,0 +1,174 @@
+/* ヘッダーのスタイル */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+header nav {
+    margin: 10px 0;
+}
+
+/* ナビゲーションメニューのスタイル */
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 5px;
+    display: inline-block;
+    background-color: #4CAF50; /* 緑ベース */
+    transition: background-color 0.3s;
+}
+
+/* ホバー時のスタイル */
+header nav a:hover {
+    background-color: #45a049; /* ホバー時の緑色 */
+}
+
+/* ヘッダー内のログイン名のスタイル */
+header nav span {
+    color: #fff;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+/* ボタンのスタイル */
+button {
+    background-color: #4CAF50; /* 緑ベース */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* ボタンのホバー時のスタイル */
+button:hover {
+    background-color: #45a049; /* ホバー時の緑色 */
+    transform: scale(1.05);
+}
+
+/* 記録データの中央配置 */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+main {
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 20px;
+}
+
+/* フォーム全体のスタイル */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+/* フォームのラベル */
+form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* フォームの入力フィールド */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="date"],
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* フォームのボタン */
+form input[type="submit"] {
+    background-color: #4CAF50; /* 緑ベース */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* ボタンのホバー時のスタイル */
+form input[type="submit"]:hover {
+    background-color: #45a049; /* ホバー時の緑色 */
+    transform: scale(1.05);
+}
+
+/* テキストエリアのスタイル */
+form textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* ツーリング記録リストのスタイル */
+ul.trip-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul.trip-list li {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+ul.trip-list li h2 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    color: #333;
+}
+
+ul.trip-list li p {
+    margin: 5px 0;
+    color: #666;
+}
+
+ul.trip-list li img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+ul.trip-list li .no-image {
+    color: #999;
+    font-style: italic;
+}
