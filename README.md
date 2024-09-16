@@ -3,6 +3,9 @@
 
 ## ②課題内容（どんな作品か）
 - ツーリングの記録をまとめることができるアプリ（改良中）
+- データの更新・削除機能の追加
+- 画像を複数枚UPできるように改良
+
 ## ③DEMO
 - https://challenge-pj2024.sakura.ne.jp/touring/index.php
 
