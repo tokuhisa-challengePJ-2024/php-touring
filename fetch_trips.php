@@ -1,10 +1,6 @@
 <?php
 // DB接続
-try {
-    $pdo = new PDO('mysql:dbname=challenge-pj2024_php_touring;charset=utf8;host=mysql57.challenge-pj2024.sakura.ne.jp', 'challenge-pj2024', 'Tokuhisa5155');
-} catch (PDOException $e) {
-    exit('DBError:'.$e->getMessage());
-}
+$pdo = db_conn();
 
 // ツーリング記録と画像を取得
 $sql = "SELECT t.*, p.photo_path 
@@ -20,3 +16,4 @@ $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if ($stmt->errorCode() != '00000') {
     echo "SQLエラー: " . implode(', ', $stmt->errorInfo());
 }
+?>

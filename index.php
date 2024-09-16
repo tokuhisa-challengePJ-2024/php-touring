@@ -1,5 +1,7 @@
 <?php
 session_start();
+// funcs.php読み込み
+include("funcs.php");
 
 // セッションにユーザーIDが設定されているか確認
 if (!isset($_SESSION['user_id'])) {
@@ -8,28 +10,44 @@ if (!isset($_SESSION['user_id'])) {
     $loggedIn = true;
 }
 
-// DB接続
-try {
-    $pdo = new PDO('mysql:dbname=DB名;charset=utf8;host=ホスト名', 'ユーザー名', 'パスワード');
-} catch (PDOException $e) {
-    exit('DBError:'.$e->getMessage());
-}
+// 1. DB接続 
+$pdo = db_conn();
 
-// ツーリング記録と画像を取得
+// 2. ツーリング記録と画像を取得のSQL作成
 $sql = "SELECT t.*, p.photo_path 
         FROM tours t
-        LEFT JOIN photos p ON t.tours_id = p.tour_id
+        LEFT JOIN photos p ON t.tours_id = p.tour_id 
         WHERE t.user_id = :user_id";
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
 $stmt->execute();
 
-// クエリの実行エラーチェック
+// 3. データ表示
 if ($stmt->errorCode() != '00000') {
     echo "SQLエラー: " . implode(', ', $stmt->errorInfo());
 }
 
-$trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// 4. 全データ取得
+$trips = $stmt->fetchAll(PDO::FETCH_ASSOC); // PDO::FETCH_ASSOC[カラム名のみで取得できるモード]
+
+// ツーリングIDごとに画像をグループ化
+$tripsGrouped = [];
+foreach ($trips as $trip) {
+    $toursId = $trip['tours_id'];
+    if (!isset($tripsGrouped[$toursId])) {
+        $tripsGrouped[$toursId] = [
+            'start_location' => $trip['start_location'],
+            'end_location' => $trip['end_location'],
+            'distance' => $trip['distance'],
+            'date' => $trip['date'],
+            'notes' => $trip['notes'],
+            'photos' => []
+        ];
+    }
+    if ($trip['photo_path']) {
+        $tripsGrouped[$toursId]['photos'][] = $trip['photo_path'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,21 +73,30 @@ $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="container">
         <main>
-            <?php if ($trips): ?>
+            <?php if ($tripsGrouped): ?>
             <ul class="trip-list">
-                <?php foreach ($trips as $trip): ?>
+                <?php foreach ($tripsGrouped as $toursId => $trip): ?>
                     <li>
-                        <h2>ツーリングID: <?php echo htmlspecialchars($trip['tours_id']); ?></h2>
+                        <h2>
+                            ツーリングID: <?php echo htmlspecialchars($toursId); ?>
+                            <a href="detail.php?tours_id=<?= htmlspecialchars($toursId) ?>">📝</a>
+                            <a href="delete.php?tours_id=<?= htmlspecialchars($toursId) ?>">🚮</a>
+                        </h2>
+                        
+                        <?php if (!empty($trip['photos'])): ?>
+                            <?php foreach ($trip['photos'] as $photoPath): ?>
+                                <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="ツーリング画像">
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p class="no-image">画像はありません。</p>
+                        <?php endif; ?>
+
                         <p>出発地: <?php echo htmlspecialchars($trip['start_location']); ?></p>
                         <p>到着地: <?php echo htmlspecialchars($trip['end_location']); ?></p>
                         <p>距離: <?php echo htmlspecialchars($trip['distance']); ?></p>
                         <p>日付: <?php echo htmlspecialchars($trip['date']); ?></p>
                         <p>メモ: <?php echo htmlspecialchars($trip['notes']); ?></p>
-                        <?php if ($trip['photo_path']): ?>
-                            <img src="<?php echo htmlspecialchars($trip['photo_path']); ?>" alt="ツーリング画像">
-                        <?php else: ?>
-                            <p class="no-image">画像はありません。</p>
-                        <?php endif; ?>
+                        
                     </li>
                 <?php endforeach; ?>
             </ul>
